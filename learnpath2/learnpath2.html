@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LearnPath – E‑Learning Path</title>
+<!--<link rel="stylesheet" href="Learn_Path_Style.css">
+  <script src="Learn_Path_Interactive.js" defer></script> -->
+  <style>
+    :root {
+  --bg: #eef0ff;
+  --g1: #c7d2fe;
+  --g2: rgb(141, 104, 181);
+  --g3: #a5f3fc;
+  --card: #fff;
+  --text: #14182b;
+  --muted: #5d6480;
+  --brand: #4f46e5;
+  --brand2: #7c3aed;
+  --line: #e3e6f0;
+  --ok: #16a34a;
+  --err: #dc2626;
+  --toast: #14182b;
+  --toastt: #fff;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top,0px);
+  padding-bottom: env(safe-area-inset-bottom,0px);
+}
+ 
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000;
+    --g1: #000;
+    --g2: #0a0a12;
+    --g3: #000;
+    --card: #111118;
+    --text: #eef0fa;
+    --muted: #a3a9c6;
+    --line: #2c3150;
+    --brand: #8b85ff;
+    --toast: #eef0fa;
+    --toastt: #14182b;
+    color-scheme: dark;
+  }
+}
+ 
+:root[data-theme="dark"] {
+  --bg: #000;
+  --g1: #000;
+  --g2: #0a0a12;
+  --g3: #000;
+  --card: #111118;
+  --text: #eef0fa;
+  --muted: #a3a9c6;
+  --line: #2c3150;
+  --brand: #8b85ff;
+  --toast: #eef0fa;
+  --toastt: #14182b;
+  color-scheme: dark;
+}
+ 
+html {
+  scroll-padding-top: env(safe-area-inset-top,0px);
+  scroll-behavior: smooth;
+}
+ 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+ 
+body {
+  margin: 0;
+  background: linear-gradient(160deg,var(--g1),var(--g2) 55%,var(--g3)) fixed var(--bg);
+  color: var(--text);
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  line-height: 1.5;
+}
+ 
+button,
+input {
+  font: inherit;
+}
+ 
+header {
+  position: sticky;
+  top: env(safe-area-inset-top,0px);
+  z-index: 5;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 8px;
+}
+ 
+.logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--brand);
+}
+ 
+nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+ 
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(135deg,var(--brand),var(--brand2));
+  color: #fff;
+}
+ 
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+ 
+.btn.full {
+  width: 100%;
+}
+ 
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+ 
+.hero {
+  padding: 40px 16px 24px;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+ 
+.hero h1 {
+  font-size: clamp(1.8rem,6vw,3rem);
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+ 
+.hero p {
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+ 
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+ 
+h2 {
+  margin: 32px 0 12px;
+}
+ 
+.path {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  -webkit-overflow-scrolling: touch;
+}
+ 
+.step {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .85rem;
+  font-weight: 600;
+}
+ 
+.step span.n {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: .8rem;
+}
+ 
+.step i {
+  width: 24px;
+  height: 2px;
+  background: var(--line);
+  margin: 0 6px;
+}
+ 
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+}
+ 
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform .15s,box-shadow .15s;
+}
+ 
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79,70,229,.18);
+  outline: 2px solid var(--brand);
+}
+ 
+.card .ic {
+  font-size: 1.8rem;
+}
+ 
+.card h3 {
+  margin: 0;
+}
+ 
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+ 
+.tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: .75rem;
+  margin-top: auto;
+  padding-top: 6px;
+}
+ 
+.tag {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 99px;
+  color: var(--muted);
+}
+ 
+.tag.ok {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+ 
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,12,25,.6);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 20;
+  padding: 0;
+}
+ 
+.overlay.open {
+  display: flex;
+}
+ 
+.modal {
+  background: var(--card);
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 18px 18px 0 0;
+  padding: 20px;
+  position: relative;
+}
+ 
+@media (min-width:600px) {
+  .overlay {
+    align-items: center;
+    padding: 16px;
+  }
+  .modal {
+    border-radius: 18px;
+  }
+}
+ 
+.x {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: 0;
+  font-size: 1.6rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+ 
+.modal h2 {
+  margin: 0 0 10px;
+}
+ 
+label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  margin: 12px 0 4px;
+}
+ 
+input {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+}
+ 
+input:focus {
+  outline: 2px solid var(--brand);
+  border-color: transparent;
+}
+ 
+.err {
+  color: var(--err);
+  font-size: .85rem;
+  min-height: 1.2em;
+  margin: 6px 0;
+}
+ 
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+ 
+.tabs button {
+  flex: 1;
+}
+ 
+.otp {
+  letter-spacing: .5em;
+  text-align: center;
+  font-size: 1.3rem;
+}
+ 
+ul.syl {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+ 
+.meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+ 
+.small {
+  color: var(--muted);
+  font-size: .85rem;
+}
+ 
+.link {
+  background: none;
+  border: 0;
+  color: var(--brand);
+  cursor: pointer;
+  padding: 0;
+  font-weight: 600;
+}
+ 
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom,0px));
+  transform: translateX(-50%);
+  background: var(--toast);
+  color: var(--toastt);
+  padding: 12px 16px;
+  border-radius: 12px;
+  z-index: 50;
+  max-width: 90%;
+  display: none;
+  text-align: center;
+}
+ 
+.ok-box {
+  text-align: center;
+  padding: 10px 0;
+}
+ 
+.ok-box .big {
+  font-size: 3rem;
+}
+ 
+.stats {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+ 
+.stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: .85rem;
+  color: var(--muted);
+}
+ 
+.stat b {
+  display: block;
+  font-size: 1.5rem;
+  color: var(--brand);
+}
+ 
+.bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+ 
+.bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg,var(--brand),var(--brand2));
+  transition: width .3s;
+}
+ 
+.tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  align-items: center;
+}
+ 
+.tools input {
+  flex: 1 1 200px;
+}
+ 
+.chip {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 99px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+ 
+.chip.on {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+ 
+.dash {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+ 
+@media (min-width:700px) {
+  .dash {
+    grid-template-columns: 240px 1fr;
+  }
+}
+ 
+.ring {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+}
+ 
+.ring div {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+ 
+.kpis {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+ 
+.row {
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+ 
+.row b {
+  font-size: .9rem;
+}
+ 
+.chk {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 6px 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+ 
+.chk input {
+  width: auto;
+  margin-top: 5px;
+}
+ 
+details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+ 
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+ 
+details p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+ 
+[id] {
+  scroll-margin-top: 70px;
+}
+ 
+header {
+  position: sticky;
+}
+ 
+nav .btn {
+  padding: 8px 12px;
+}
+ 
+.links {
+  display: none;
+  gap: 2px;
+}
+ 
+.links a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: .9rem;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+ 
+.links a:hover {
+  background: var(--bg);
+}
+ 
+.links a.on {
+  color: var(--brand);
+}
+ 
+.burger {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+ 
+header.menu .links {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  padding: 8px 12px;
+}
+ 
+@media (min-width:900px) {
+  .links,
+  header.menu .links {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    border: 0;
+    padding: 0;
+    background: none;
+  }
+  .burger {
+    display: none;
+  }
+}
+ 
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+ 
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 -40px;
+  z-index: -1;
+  background: radial-gradient(circle at 15% 30%,rgba(124,58,237,.28),transparent 45%),radial-gradient(circle at 85% 20%,rgba(79,70,229,.28),transparent 45%),radial-gradient(circle at 50% 100%,rgba(14,165,233,.18),transparent 50%);
+  animation: drift 9s ease-in-out infinite alternate;
+}
+ 
+@keyframes drift {
+  to {
+    transform: translateY(14px) scale(1.05);
+  }
+}
+ 
+@keyframes up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+ 
+.pill {
+  display: inline-block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--brand);
+  margin-bottom: 12px;
+}
+ 
+.grad {
+  background: linear-gradient(90deg,var(--brand),var(--brand2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+ 
+.card {
+  animation: up .5s backwards;
+  border-top: 3px solid hsl(var(--h,250) 80% 60%);
+}
+ 
+.card .ic {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: hsl(var(--h,250) 80% 60%/.16);
+  font-size: 1.6rem;
+}
+ 
+.hero h1 {
+  font-weight: 800;
+}
+ 
+@media (prefers-reduced-motion:reduce) {
+  * {
+    animation: none!important;
+    transition: none!important;
+  }
+}
+ 
+.pn {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+ 
+.pn .btn {
+  flex: 1;
+  font-size: .85rem;
+  padding: 9px 8px;
+}
+ 
+.crumb {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+ 
+#top {
+  position: fixed;
+  right: 16px;
+  bottom: calc(20px + env(safe-area-inset-bottom,0px));
+  display: none;
+  z-index: 15;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--brand);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3);
+}
+ 
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 24px 16px;
+  font-size: .85rem;
+}
+ 
+footer a {
+  color: var(--brand);
+  margin: 0 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+ 
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">🎓 LearnPath</div>
+  <div class="links" id="links" onclick="document.querySelector('header').classList.remove('menu')"><a href="#home" data-s="home" onclick="go(event,'home')">Home</a><a href="#roadmap" data-s="roadmap" onclick="go(event,'roadmap')">Roadmap</a><a href="#courses" data-s="courses" onclick="go(event,'courses')">Courses</a><a href="#mine" onclick="go(event,'mine')">My progress</a><a href="#why" data-s="why" onclick="go(event,'why')">Why us</a><a href="#faq" data-s="faq" onclick="go(event,'faq')">FAQ</a><a href="#" onclick="toggleTheme(event)">🌓 Theme</a></div>
+  <nav id="nav"></nav>
+  <button class="burger" aria-label="Menu" onclick="document.querySelector('header').classList.toggle('menu')">☰</button>
+</header>
+
+<section class="hero" id="home">
+  <span class="pill">🏆 Learn · Practice · Get your Dream Job .</span>
+  <h1>Your path from coding basics to <span class="grad" id="typed">system design</span></h1>
+  <p>Pick a course, view the roadmap, and enroll in under a minute with email OTP verification.</p>
+  <button class="btn" onclick="document.getElementById('courses').scrollIntoView()">Explore courses</button> <button class="btn ghost" onclick="document.getElementById('roadmap').scrollIntoView({behavior:'smooth'})">Find my path</button>
+  <div class="stats" id="stats"></div>
+</section>
+
+<main>
+  <h2 id="roadmap">Recommended learning path <span class="small">(tap a step)</span></h2>
+  <div class="tools" id="goals"><span class="small">Your goal:</span><button class="chip on" data-g="all" onclick="setGoal('all')">🧭 Full path</button><button class="chip" data-g="job" onclick="setGoal('job')">🎯 Placements</button><button class="chip" data-g="web" onclick="setGoal('web')">🌐 Web developer</button><button class="chip" data-g="cloud" onclick="setGoal('cloud')">☁️ Cloud &amp; DevOps</button><button class="chip" data-g="ai" onclick="setGoal('ai')">🤖 AI / ML</button></div>
+  <div class="path" id="path"></div>
+
+  <div id="mine"></div>
+
+  <h2 id="courses">All courses</h2>
+  <div class="tools"><input id="q" type="search" placeholder="Search courses…" oninput="renderGrid()"><button class="chip on" data-l="All" onclick="setLvl('All')">All</button><button class="chip" data-l="Beginner" onclick="setLvl('Beginner')">Beginner</button><button class="chip" data-l="Intermediate" onclick="setLvl('Intermediate')">Intermediate</button><button class="chip" data-l="Advanced" onclick="setLvl('Advanced')">Advanced</button></div>
+  <div class="grid" id="grid"></div>
+
+  <h2 id="why">Why LearnPath?</h2>
+  <div class="grid">
+    <div class="card" style="cursor:default"><div class="ic">🗺️</div><h3>Guided roadmap</h3><p>A clear order from basics to system design so you never wonder what to learn next.</p></div>
+    <div class="card" style="cursor:default"><div class="ic">🔐</div><h3>Verified enrollment</h3><p>Email OTP validation keeps every account and enrollment genuine.</p></div>
+    <div class="card" style="cursor:default"><div class="ic">📈</div><h3>Track performance</h3><p>Tick off lessons and watch your progress dashboard update instantly.</p></div>
+    <div class="card" style="cursor:default"><div class="ic">📱</div><h3>Any device</h3><p>Fast, lightweight and fully responsive on mobile, tablet and desktop.</p></div>
+  </div>
+
+  <h2 id="faq">FAQ</h2>
+  <details><summary>Is enrollment free?</summary><p>Yes. Verify your email with an OTP and you are enrolled instantly.</p></details>
+  <details><summary>Where should a beginner start?</summary><p>Follow the roadmap: Python or C first, then C++/Java, then Data Structures.</p></details>
+  <details><summary>How is my progress saved?</summary><p>Lesson progress is saved in your browser and linked to your email account.</p></details>
+</main>
+<footer>© LearnPath · ALL RIGHT RESERVED. <br> Contact us : 9337186722 <br> Email : supportlearnpath@gmail.com </footer>
+
+
+<div class="overlay" id="ov"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+<button id="top" aria-label="Back to top" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="toast"></div>
+
+<script>
+    const COURSES = [
+    { id: "python", ic: "🐍", name: "Python", lvl: "Beginner", wk: 6, d: "Learn clean, readable programming used in automation, data and AI.", syl: ["Syntax, variables & control flow", "Functions, modules & OOP", "File handling & exceptions", "Libraries: NumPy, Requests", "Mini project: CLI tool"] },
+    { id: "c", ic: "🔧", name: "C Programming", lvl: "Beginner", wk: 5, d: "Understand how computers work with pointers, memory and low‑level logic.", syl: ["Data types & operators", "Arrays, strings & functions", "Pointers & dynamic memory", "Structures & file I/O", "Project: Student record system"] },
+    { id: "cpp", ic: "⚙️", name: "C++", lvl: "Intermediate", wk: 7, d: "Object‑oriented and high‑performance programming with the STL.", syl: ["Classes, objects & inheritance", "Templates & operator overloading", "STL: vector, map, set", "Memory management & RAII", "Project: Library manager"] },
+    { id: "java", ic: "☕", name: "Java", lvl: "Intermediate", wk: 8, d: "Build robust applications with OOP, collections and multithreading.", syl: ["OOP principles & interfaces", "Collections & generics", "Exceptions & streams", "Multithreading", "Project: Banking app"] },
+    { id: "dsa", ic: "🧩", name: "Data Structures & Algorithms", lvl: "Intermediate", wk: 10, d: "Crack interviews with core structures and problem‑solving patterns.", syl: ["Arrays, linked lists, stacks, queues", "Trees, heaps & graphs", "Sorting & searching", "Recursion & dynamic programming", "100 practice problems"] },
+    { id: "devops", ic: "🚀", name: "DevOps", lvl: "Intermediate", wk: 8, d: "Automate build, test and deployment with modern tooling.", syl: ["Linux & Git workflows", "CI/CD with pipelines", "Docker & Kubernetes", "Infrastructure as Code", "Monitoring & logging"] },
+    { id: "cloud", ic: "☁️", name: "Cloud Computing", lvl: "Intermediate", wk: 6, d: "Deploy scalable apps on the cloud with core services.", syl: ["Cloud models: IaaS, PaaS, SaaS", "Compute, storage & databases", "IAM & security", "Serverless & containers", "Project: Host a 3‑tier app"] },
+    { id: "net", ic: "🌐", name: "Networking", lvl: "Beginner", wk: 5, d: "Understand how data travels across the internet.", syl: ["OSI & TCP/IP models", "IP addressing & subnetting", "DNS, HTTP, TLS", "Routing & switching", "Troubleshooting tools"] },
+    { id: "sd", ic: "🏗️", name: "System Design", lvl: "Advanced", wk: 8, d: "Design scalable, reliable systems like top tech companies.", syl: ["Scalability & load balancing", "Caching & databases", "Queues & microservices", "CAP theorem & consistency", "Case studies: URL shortener, chat"] },
+    { id: "git", ic: "🌿", name: "Git & GitHub", lvl: "Beginner", wk: 2, d: "Version control and collaboration skills every developer needs.", syl: ["Init, commit & history", "Branching & merging", "Remotes, push & pull", "Pull requests & code review", "Project: Open-source contribution"] },
+    { id: "web", ic: "🌍", name: "Web Development", lvl: "Beginner", wk: 8, d: "Build responsive websites with HTML, CSS and JavaScript.", syl: ["HTML5 & semantic markup", "CSS, Flexbox & Grid", "JavaScript & the DOM", "Fetch APIs & async code", "Project: Portfolio website"] },
+    { id: "sql", ic: "🗄️", name: "SQL & Databases", lvl: "Beginner", wk: 5, d: "Store, query and design data with relational databases.", syl: ["SELECT, WHERE & ORDER BY", "Joins & aggregations", "Normalization & schema design", "Indexes & transactions", "Project: Library database"] },
+    { id: "os", ic: "💻", name: "Operating Systems", lvl: "Intermediate", wk: 6, d: "Learn how processes, memory and files work inside your computer.", syl: ["Processes & threads", "CPU scheduling", "Deadlocks & synchronization", "Memory management & paging", "File systems"] },
+    { id: "sec", ic: "🛡️", name: "Cybersecurity", lvl: "Intermediate", wk: 7, d: "Protect systems and data with security fundamentals.", syl: ["Threats & attack types", "Cryptography basics", "Web security: XSS, SQLi", "Network defense & firewalls", "Ethical hacking labs"] },
+    { id: "ml", ic: "🤖", name: "Machine Learning", lvl: "Advanced", wk: 10, d: "Train models that learn from data using Python.", syl: ["Data preprocessing", "Regression & classification", "Model evaluation", "Neural network basics", "Project: Prediction app"] }
+];
+const PATH = ["python", "c", "cpp", "java", "git", "web", "sql", "dsa", "os", "net", "cloud", "devops", "sec", "sd", "ml"];
+const $ = s => document.querySelector(s);
+const ls = {
+    get(k, d) {
+        try {
+            const v = localStorage.getItem(k);
+            return v ? JSON.parse(v) : d;
+        }
+        catch (e) {
+            return d;
+        }
+    }, set(k, v) {
+        try {
+            localStorage.setItem(k, JSON.stringify(v));
+        }
+        catch (e) {
+        }
+    }
+};
+let mem = { users: ls.get("lp_users", {}), user: ls.get("lp_user", null), enr: ls.get("lp_enr", {}) };
+let otpState = null;
+function toast(m, t = 6000) {
+    const e = $("#toast");
+    e.textContent = m;
+    e.style.display = "block";
+    clearTimeout(toast.t);
+    toast.t = setTimeout(() => e.style.display = "none", t);
+}
+function open(h) {
+    $("#modal").innerHTML = '<button class="x" aria-label="Close" onclick="closeM()">×</button>' + h;
+    $("#ov").classList.add("open");
+}
+function closeM() {
+    $("#ov").classList.remove("open");
+    otpState = null;
+}
+$("#ov").addEventListener("click", e => {
+    if (e.target.id === "ov")
+        closeM();
+});
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape")
+        closeM();
+});
+const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+const okMob = v => /^[6-9]\d{9}$/.test(v) || /^\+?\d{10,13}$/.test(v);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function sendOtp(email) {
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    otpState = { email, code, exp: Date.now() + 300000, tries: 0 };
+    toast("Demo email OTP for " + email + ": " + code, 15000);
+}
+function checkOtp(v) {
+    if (!otpState)
+        return "Please request an OTP first.";
+    if (Date.now() > otpState.exp)
+        return "OTP expired. Please resend.";
+    if (++otpState.tries > 5)
+        return "Too many attempts. Please resend OTP.";
+    return v === otpState.code ? "" : "Incorrect OTP. Try again.";
+}
+function renderNav() {
+    const u = mem.user;
+    $("#nav").innerHTML = u ? `<span class="small">Hi, ${esc(u.name.split(" ")[0])}</span><button class="btn ghost" onclick="logout()">Logout</button>`
+        : `<button class="btn ghost" onclick="authM('login')">Login</button><button class="btn" onclick="authM('signup')">Sign up</button>`;
+}
+function renderPath() {
+    const P = GOALS[goal] || PATH;
+    $("#path").innerHTML = P.map((id, i) => {
+        const c = COURSES.find(x => x.id === id);
+        return `<div class="step" style="cursor:pointer" onclick="detail('${id}')"><span class="n">${i + 1}</span>${c.name.replace(" Programming", "")}${i < P.length - 1 ? "<i></i>" : ""}</div>`;
+    }).join("");
+}
+function renderGrid() {
+    const e = u => u && mem.enr[u.email] || [];
+    const mine = e(mem.user);
+    const q = ($("#q") ? $("#q").value : "").toLowerCase();
+    $("#grid").innerHTML = COURSES.filter(c => (curLvl === "All" || c.lvl === curLvl) && (c.name + " " + c.d).toLowerCase().includes(q)).map(c => `<button class="card" style="--h:${(COURSES.indexOf(c) * 26 + 235) % 360};animation-delay:${COURSES.indexOf(c) * 40}ms" onclick="detail('${c.id}')"><div class="ic">${c.ic}</div><h3>${c.name}</h3><p>${c.d}</p><div class="tags"><span class="tag">${c.lvl}</span><span class="tag">${c.wk} weeks</span>${goal !== "all" && GOALS[goal].includes(c.id) ? '<span class="tag ok">★ For your goal</span>' : ""}${mine.includes(c.id) ? '<span class="tag ok">Enrolled ✓</span>' : ""}</div></button>`).join("");
+    renderDash(mine);
+}
+function detail(id) {
+    const c = COURSES.find(x => x.id === id);
+    const done = mem.user && (mem.enr[mem.user.email] || []).includes(id);
+    open(`<div class="crumb">Courses › ${c.name} (${COURSES.indexOf(c) + 1} of ${COURSES.length})</div><h2>${c.ic} ${c.name}</h2><div class="meta"><span class="tag">${c.lvl}</span><span class="tag">${c.wk} weeks</span><span class="tag">Certificate</span></div><p>${c.d}</p><strong>What you’ll learn</strong>${done ? `<div>${c.syl.map((s, i) => `<label class="chk"><input type="checkbox" ${prog(id).includes(i) ? "checked" : ""} onchange="tick('${id}',${i},this.checked)"><span>${s}</span></label>`).join("")}</div><div class="bar"><i id="pb" style="width:${pct(id)}%"></i></div><p class="small">Tick lessons as you finish them to track your progress.</p><div id="cert">${pct(id) === 100 ? certBtn(id) : ""}</div>` : `<ul class="syl">${c.syl.map(s => `<li>${s}</li>`).join("")}</ul>`}${done ? '<p class="tag ok" style="display:inline-block">You are enrolled ✓</p>' : `<button class="btn full" onclick="enrollForm('${id}')">Enroll now</button>`}<div class="pn"><button class="btn ghost" onclick="detail('${nb(c, -1).id}')">← ${nb(c, -1).name}</button><button class="btn ghost" onclick="detail('${nb(c, 1).id}')">${nb(c, 1).name} →</button></div>`);
+}
+function authM(mode) {
+    otpState = null;
+    open(`<div class="tabs"><button class="btn ${mode === "login" ? "" : "ghost"}" onclick="authM('login')">Login</button><button class="btn ${mode === "signup" ? "" : "ghost"}" onclick="authM('signup')">Sign up</button></div>
+  <div id="af">${mode === "signup" ? `<label>Full name</label><input id="n" autocomplete="name" placeholder="Your name"><label>Mobile number</label><input id="m" type="tel" inputmode="tel" autocomplete="tel" placeholder="10‑digit mobile">` : ""}
+  <label>Email</label><input id="e" type="email" autocomplete="email" placeholder="you@example.com">
+  <div class="err" id="er"></div><button class="btn full" onclick="authSend('${mode}')">Send email OTP</button></div>`);
+}
+function authSend(mode) {
+    const e = $("#e").value.trim().toLowerCase(), n = mode === "signup" ? $("#n").value.trim() : "", m = mode === "signup" ? $("#m").value.trim() : "";
+    const er = t => $("#er").textContent = t;
+    if (mode === "signup") {
+        if (n.length < 2)
+            return er("Enter your full name.");
+        if (!okMob(m))
+            return er("Enter a valid mobile number.");
+    }
+    if (!okEmail(e))
+        return er("Enter a valid email address.");
+    if (mode === "signup" && mem.users[e])
+        return er("Account exists. Please login.");
+    if (mode === "login" && !mem.users[e])
+        return er("No account found. Please sign up.");
+    sendOtp(e);
+    $("#af").innerHTML = `<p class="small">We sent a 6‑digit OTP to <b>${esc(e)}</b>.</p><label>Enter OTP</label><input id="o" class="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code"><div class="err" id="er"></div><button class="btn full" onclick="authVerify('${mode}','${esc(n)}','${esc(m)}')">Verify &amp; ${mode === "signup" ? "create account" : "login"}</button><p class="small"><button class="link" onclick="sendOtp('${e}')">Resend OTP</button></p>`;
+}
+function authVerify(mode, n, m) {
+    const r = checkOtp($("#o").value.trim());
+    if (r)
+        return $("#er").textContent = r;
+    const e = otpState.email;
+    if (mode === "signup") {
+        mem.users[e] = { name: n, email: e, mobile: m };
+        ls.set("lp_users", mem.users);
+    }
+    mem.user = mem.users[e];
+    ls.set("lp_user", mem.user);
+    closeM();
+    renderNav();
+    renderGrid();
+    toast("Welcome, " + mem.user.name + "! You are logged in.", 3500);
+}
+function logout() {
+    mem.user = null;
+    ls.set("lp_user", null);
+    renderNav();
+    renderGrid();
+    toast("Logged out.", 2500);
+}
+function enrollForm(id) {
+    const c = COURSES.find(x => x.id === id), u = mem.user || {};
+    otpState = null;
+    open(`<h2>Enroll in ${c.name}</h2><div id="ef"><label>Full name</label><input id="n" autocomplete="name" value="${esc(u.name || "")}"><label>Email</label><input id="e" type="email" autocomplete="email" value="${esc(u.email || "")}"><label>Mobile number</label><input id="m" type="tel" inputmode="tel" autocomplete="tel" value="${esc(u.mobile || "")}"><div class="err" id="er"></div><button class="btn full" onclick="enSend('${id}')">Send email OTP</button></div>`);
+}
+function enSend(id) {
+    const n = $("#n").value.trim(), e = $("#e").value.trim().toLowerCase(), m = $("#m").value.trim(), er = t => $("#er").textContent = t;
+    if (n.length < 2)
+        return er("Enter your name.");
+    if (!okEmail(e))
+        return er("Enter a valid email.");
+    if (!okMob(m))
+        return er("Enter a valid mobile number.");
+    sendOtp(e);
+    $("#ef").innerHTML = `<p class="small">Enter the OTP sent to <b>${esc(e)}</b> to confirm enrollment.</p><label>Email OTP</label><input id="o" class="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code"><div class="err" id="er"></div><button class="btn full" onclick="enDone('${id}','${esc(n)}','${esc(m)}')">Verify &amp; enroll</button><p class="small"><button class="link" onclick="sendOtp('${e}')">Resend OTP</button></p>`;
+}
+function enDone(id, n, m) {
+    const r = checkOtp($("#o").value.trim());
+    if (r)
+        return $("#er").textContent = r;
+    const e = otpState.email;
+    if (!mem.users[e]) {
+        mem.users[e] = { name: n, email: e, mobile: m };
+        ls.set("lp_users", mem.users);
+    }
+    mem.user = mem.users[e];
+    ls.set("lp_user", mem.user);
+    const l = mem.enr[e] || [];
+    if (!l.includes(id))
+        l.push(id);
+    mem.enr[e] = l;
+    ls.set("lp_enr", mem.enr);
+    const c = COURSES.find(x => x.id === id);
+    open(`<div class="ok-box"><div class="big">🎉</div><h2>Enrolled successfully!</h2><p>${esc(n)}, you are now enrolled in <b>${c.name}</b>. A confirmation has been sent to ${esc(e)}.</p><button class="btn full" onclick="closeM()">Start learning</button></div>`);
+    renderNav();
+    renderGrid();
+}
+let curLvl = "All";
+mem.prog = ls.get("lp_prog", {});
+const key = () => mem.user ? mem.user.email : "";
+const prog = id => (mem.prog[key()] || {})[id] || [];
+const pct = id => Math.round(prog(id).length / COURSES.find(x => x.id === id).syl.length * 100);
+function tick(id, i, on) {
+    const k = key(), p = mem.prog[k] || {}, s = new Set(p[id] || []);
+    on ? s.add(i) : s.delete(i);
+    p[id] = [...s];
+    mem.prog[k] = p;
+    ls.set("lp_prog", mem.prog);
+    $("#pb").style.width = pct(id) + "%";
+    $("#cert").innerHTML = pct(id) === 100 ? certBtn(id) : "";
+    renderDash(mem.enr[k] || []);
+    if (on && pct(id) === 100)
+        toast("🏆 Course completed: " + COURSES.find(x => x.id === id).name, 4000);
+}
+function setLvl(l) {
+    curLvl = l;
+    document.querySelectorAll(".chip[data-l]").forEach(b => b.classList.toggle("on", b.dataset.l === l));
+    renderGrid();
+}
+function renderDash(mine) {
+    if (!mine.length) {
+        $("#mine").innerHTML = "";
+        return;
+    }
+    const ps = mine.map(pct), avg = Math.round(ps.reduce((a, b) => a + b, 0) / ps.length), lessons = mine.reduce((a, id) => a + prog(id).length, 0), done = ps.filter(p => p === 100).length;
+    const lab = avg >= 70 ? "Top performer 🏆" : avg >= 30 ? "On track 👍" : "Getting started 🚀";
+    const xp = lessons * 10 + done * 50 + mine.length * 20, lvl = Math.floor(xp / 100) + 1;
+    const bd = [[mine.length >= 1, "🌱 First step"], [lessons >= 5, "📚 5 lessons"], [lessons >= 10, "🔥 10 lessons"], [mine.length >= 3, "🚀 3 courses"], [done >= 1, "🏆 Graduate"]];
+    const badges = bd.map(([ok, t]) => `<span class="tag ${ok ? "ok" : ""}" style="${ok ? "" : "opacity:.45"}">${t}</span>`).join("");
+    $("#mine").innerHTML = `<h2>My performance</h2><div class="dash"><div><div class="ring" style="background:conic-gradient(var(--brand) ${avg * 3.6}deg,var(--line) 0)"><div>${avg}%</div></div><div class="kpis"><span class="tag">${lessons} lessons done</span><span class="tag">${done} completed</span></div><p class="small" style="text-align:center;margin:8px 0 0"><b>${lab}</b></p><p class="small" style="text-align:center;margin:4px 0"><b>Level ${lvl}</b> · ${xp} XP</p><div class="bar"><i style="width:${xp % 100}%"></i></div><div class="kpis">${badges}</div></div><div>${mine.map((id, i) => {
+        const c = COURSES.find(x => x.id === id);
+        return `<div class="row" onclick="detail('${id}')"><b>${c.ic} ${c.name}</b> <span class="small">· ${ps[i]}%</span><div class="bar"><i style="width:${ps[i]}%"></i></div></div>`;
+    }).join("")}</div></div>`;
+}
+$("#stats").innerHTML = `<div class="stat"><b>${COURSES.length}</b>Courses</div><div class="stat"><b>${COURSES.reduce((a, c) => a + c.syl.length, 0)}</b>Lessons</div><div class="stat"><b>${COURSES.reduce((a, c) => a + c.wk, 0)}</b>Weeks of content</div><div class="stat"><b>Free</b>Enrollment</div>`;
+let goal = "all";
+const GOALS = { job: ["c", "java", "cpp", "dsa", "os", "sql", "sd"], web: ["git", "web", "sql", "python", "cloud", "sd"], cloud: ["python", "git", "net", "cloud", "devops", "sec"], ai: ["python", "sql", "dsa", "ml"] };
+function setGoal(g) {
+    goal = g;
+    document.querySelectorAll(".chip[data-g]").forEach(b => b.classList.toggle("on", b.dataset.g === g));
+    renderPath();
+    renderGrid();
+}
+function toggleTheme(e) {
+    e.preventDefault();
+    const r = document.documentElement, cur = r.dataset.theme || (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light");
+    r.dataset.theme = cur === "dark" ? "light" : "dark";
+}
+const certBtn = id => `<button class="btn full" style="margin-top:8px" onclick="cert('${id}')">🎓 Get your certificate</button>`;
+function cert(id) {
+    const c = COURSES.find(x => x.id === id), u = mem.user || { name: "Learner" }, cv = document.createElement("canvas");
+    cv.width = 1000;
+    cv.height = 680;
+    const g = cv.getContext("2d");
+    g.fillStyle = "#fff";
+    g.fillRect(0, 0, 1000, 680);
+    const gr = g.createLinearGradient(0, 0, 1000, 0);
+    gr.addColorStop(0, "#4f46e5");
+    gr.addColorStop(1, "#7c3aed");
+    g.strokeStyle = gr;
+    g.lineWidth = 14;
+    g.strokeRect(24, 24, 952, 632);
+    g.lineWidth = 2;
+    g.strokeRect(44, 44, 912, 592);
+    g.textAlign = "center";
+    g.fillStyle = "#4f46e5";
+    g.font = "bold 28px sans-serif";
+    g.fillText("🎓 LEARNPATH", 500, 120);
+    g.fillStyle = "#14182b";
+    g.font = "bold 52px Georgia,serif";
+    g.fillText("Certificate of Completion", 500, 210);
+    g.font = "22px sans-serif";
+    g.fillStyle = "#5d6480";
+    g.fillText("This is proudly presented to", 500, 280);
+    g.fillStyle = "#14182b";
+    g.font = "italic bold 56px Georgia,serif";
+    g.fillText(u.name, 500, 360);
+    g.font = "22px sans-serif";
+    g.fillStyle = "#5d6480";
+    g.fillText("for successfully completing the course", 500, 420);
+    g.fillStyle = "#4f46e5";
+    g.font = "bold 42px sans-serif";
+    g.fillText(c.name, 500, 490);
+    g.fillStyle = "#5d6480";
+    g.font = "18px sans-serif";
+    g.fillText(new Date().toLocaleDateString() + " · Certificate ID PRAMOD SAHOO 2007 -" + Date.now().toString(36).toUpperCase(), 500, 590);
+    const url = cv.toDataURL("image/png");
+    open(`<h2>🎓 Your certificate</h2><img src="${url}" alt="Certificate" style="width:100%;border-radius:8px;border:1px solid var(--line)"><a class="btn full" style="display:block;text-align:center;text-decoration:none;margin-top:10px" href="${url}" download="LearnPath-${c.id}-certificate.png">Download PNG</a><p class="small">If the download doesn’t start, press and hold (or right‑click) the image to save it.</p>`);
+}
+const TW = ["system design", "Machine Learning", "Cloud & DevOps", "your dream job"];
+let ti = 0;
+setInterval(() => {
+    ti = (ti + 1) % TW.length;
+    $("#typed").textContent = TW[ti];
+}, 2200);
+const nb = (c, d) => COURSES[(COURSES.indexOf(c) + d + COURSES.length) % COURSES.length];
+function go(e, id) {
+    e.preventDefault();
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+const SECS = ["home", "roadmap", "courses", "why", "faq"];
+addEventListener("scroll", () => {
+    $("#top").style.display = scrollY > 500 ? "block" : "none";
+    let cur = "home";
+    SECS.forEach(s => {
+        if (document.getElementById(s).getBoundingClientRect().top < 140)
+            cur = s;
+    });
+    document.querySelectorAll(".links a").forEach(a => a.classList.toggle("on", a.dataset.s === cur));
+}, { passive: true });
+document.documentElement.dataset.theme = "dark";
+renderNav();
+renderPath();
+renderGrid();
+ 
+
+</script>
